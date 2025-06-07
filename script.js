@@ -3,25 +3,28 @@
 // --- Wheel spin logic ---
 const wheel = document.getElementById('wheel');
 const spinBtn = document.getElementById('spinButton');
-const segments = 8;
+const segments = 8; // total slices in the wheel
+
+let currentRotation = 0; // keep track of cumulative rotation so every spin looks the same
 
 spinBtn.addEventListener('click', () => {
-  // disable while spinning
+  // Disable the button while the wheel is spinning
   spinBtn.disabled = true;
 
-  // calculate random spin: at least 3 full rotations + random segment
+  // Select a random segment for the wheel to stop at
   const randSegment = Math.floor(Math.random() * segments);
   const degreesPerSeg = 360 / segments;
   const extraDeg = randSegment * degreesPerSeg;
-  const totalDeg = 360 * 3 + extraDeg + (degreesPerSeg / 2);
 
-  // apply transform
-  wheel.style.transform = `rotate(${totalDeg}deg)`;
+  // Each spin makes at least 3 full rotations before landing
+  currentRotation += 360 * 3 + extraDeg + degreesPerSeg / 2;
 
-  // wait for animation to finish (~4s)
+  // Apply CSS transform to trigger the transition
+  wheel.style.transform = `rotate(${currentRotation}deg)`;
+
+  // Wait for the transition (4s in CSS) to complete before enabling the button
   setTimeout(() => {
-    // announce prize (all segments identical here; adapt as needed)
-    alert(`অভিনন্দন! আপনি পান ${1400} ৳ পুরস্কার`);
+    alert(`অভিনন্দন! আপনি পান 1400 ৳ পুরস্কার`);
     spinBtn.disabled = false;
   }, 4000);
 });
